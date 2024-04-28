@@ -11,21 +11,36 @@ public class Converter {
                 .setLenient()
                 .create();
         ExchangeInfo exchangeInfo = gson.fromJson(ConsultAPI.exchangeRateAPI(originalCurrency), ExchangeInfo.class);
-        String response = String.format("%.2f - %s converted to %s is", value, originalCurrency, destinationCurrency);
+
         if (!exchangeInfo.result().equalsIgnoreCase("success"))
             return;
-        if (destinationCurrency.equalsIgnoreCase("ARS")) {
-            System.out.printf("\n%s %.2f%n\n", response, exchangeInfo.conversion_rates().ARS() * value);
-        } else if (destinationCurrency.equalsIgnoreCase("BOB")) {
-            System.out.printf("\n%s %.2f%n\n", response, exchangeInfo.conversion_rates().BOB() * value);
-        } else if (destinationCurrency.equalsIgnoreCase("BRL")) {
-            System.out.printf("\n%s %.2f%n\n", response, exchangeInfo.conversion_rates().BRL() * value);
-        } else if (destinationCurrency.equalsIgnoreCase("CLP")) {
-            System.out.printf("\n%s %.2f%n\n", response, exchangeInfo.conversion_rates().CLP() * value);
-        } else if (destinationCurrency.equalsIgnoreCase("COP")) {
-            System.out.printf("\n%s %.2f%n\n", response, exchangeInfo.conversion_rates().COP() * value);
-        } else if (destinationCurrency.equalsIgnoreCase("USD")) {
-            System.out.printf("\n%s %.2f%n\n", response, exchangeInfo.conversion_rates().USD() * value);
+
+        String response = String.format("%.2f - %s converted to %s is", value, originalCurrency.toUpperCase(), destinationCurrency.toUpperCase());
+        double rate = 0.0;
+        switch (destinationCurrency.toUpperCase()) {
+            case "ARS":
+                rate = exchangeInfo.conversion_rates().ARS();
+                break;
+            case "BOB":
+                rate = exchangeInfo.conversion_rates().BOB();
+                break;
+            case "BRL":
+                rate = exchangeInfo.conversion_rates().BRL();
+                break;
+            case "CLP":
+                rate = exchangeInfo.conversion_rates().CLP();
+                break;
+            case "COP":
+                rate = exchangeInfo.conversion_rates().COP();
+                break;
+            case "USD":
+                rate = exchangeInfo.conversion_rates().USD();
+                break;
+            default:
+                System.out.println("\nCurrency not supported\n");
+                return;
         }
+
+        System.out.printf("\n%s %.2f%n\n", response, rate * value);
     }
 }

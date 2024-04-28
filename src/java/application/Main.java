@@ -1,12 +1,7 @@
 package application;
 
-import com.google.gson.*;
-import models.ConsultAPI;
 import models.Converter;
-import models.ExchangeInfo;
-
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Main {
@@ -14,7 +9,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         String originalCurrency;
         String destinationCurrency;
-        String c;
+        String c = "";
         double value;
 
         do {
@@ -24,6 +19,10 @@ public class Main {
             originalCurrency = sc.nextLine();
             System.out.print("Enter which currency you want to convert to (Ex: BRL): ");
             destinationCurrency = sc.nextLine();
+            if (!UI.checkParameter(originalCurrency) || !UI.checkParameter(destinationCurrency)) {
+                System.out.println("\nOne of the coins was not detected, please try again\n");
+                continue;
+            }
             System.out.print("Now enter the value you want to convert: ");
             value = sc.nextDouble();
             try {
